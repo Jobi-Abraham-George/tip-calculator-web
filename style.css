@@ -1,4 +1,138 @@
-body { font-family: sans-serif; max-width: 600px; margin: 2em auto; padding: 0 1em; }
-textarea { width: 100%; font-family: monospace; }
-button { padding: 0.5em 1em; margin: 1em 0; }
-pre { background: #f4f4f4; padding: 1em; }
+/* ----------------------------------
+   Color palette
+----------------------------------- */
+:root {
+  --color-bg:           #f0f4f8;
+  --color-card:         #ffffff;
+  --color-primary:      #5c6bc0;
+  --color-secondary:    #ffb74d;
+  --color-accent:       #26a69a;
+  --color-text:         #333333;
+  --color-muted:        #666666;
+  --color-header:       #3949ab;
+  --color-row-alt:      #e8eaf6;
+  --color-button:       #ffb300;
+  --color-button-hover: #ffa000;
+}
+
+/* ----------------------------------
+   Base styles
+----------------------------------- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 2rem 1rem;
+  font-family: 'Roboto', sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+h1 {
+  font-size: 2rem;
+  text-align: center;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+  color: var(--color-header);
+  margin: 1.5rem 0 0.5rem;
+}
+
+/* ----------------------------------
+   Sections
+----------------------------------- */
+section {
+  background: var(--color-card);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  margin-bottom: 1rem;
+}
+
+/* ----------------------------------
+   Tables
+----------------------------------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0.75rem;
+}
+
+th, td {
+  padding: 0.5rem;
+  text-align: left;
+}
+
+th {
+  background: var(--color-header);
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+tbody tr:nth-child(even) {
+  background: var(--color-row-alt);
+}
+
+/* ----------------------------------
+   Inputs & Selects
+----------------------------------- */
+input[type="time"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 0.4rem;
+  border: 1px solid var(--color-muted);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+/* ----------------------------------
+   Buttons
+----------------------------------- */
+button {
+  background: var(--color-button);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+button:hover {
+  background: var(--color-button-hover);
+}
+
+/* ----------------------------------
+   Calculate Button Override
+----------------------------------- */
+#calc {
+  background: #e53935;       /* red */
+}
+
+#calc:hover {
+  background: #d32f2f;       /* darker red */
+}
+
+/* ----------------------------------
+   Output
+----------------------------------- */
+pre#output {
+  background: var(--color-card);
+  padding: 1rem;
+  border-left: 4px solid var(--color-accent);
+  border-radius: 4px;
+  font-family: 'Roboto', monospace;
+  color: var(--color-text);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}

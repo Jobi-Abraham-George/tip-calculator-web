@@ -3,25 +3,80 @@
 <head>
   <meta charset="UTF-8" />
   <title>Tip Calculator</title>
+  <!-- Google Font -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <h1>Tip Calculator</h1>
 
+  <!-- 1. Employee Manager -->
   <section>
-    <h2>Employees</h2>
-    <textarea id="employees" rows="6" placeholder='[{"name":"Alice","role":"cook","start":"10:00","end":"18:00"}, …]'></textarea>
+    <h2>1. Employee Manager</h2>
+    <table id="emp-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Role</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button id="add-emp">Add Employee</button>
   </section>
 
+  <!-- 2. Tip Manager -->
   <section>
-    <h2>Tip Periods</h2>
-    <textarea id="periods" rows="6" placeholder='[{"start":"14:00","end":"16:00","til":100,"jar":50}, …]'></textarea>
+    <h2>2. Tip Manager</h2>
+    <table id="tip-table">
+      <thead>
+        <tr>
+          <th>Tip Source</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Amount</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button id="add-tip">Add Tip Row</button>
+
+    <!-- MOVED: Calculate button under Tip Manager -->
+    <div style="margin-top:1rem;">
+      <button id="calc">3. Calculate &amp; Allocate Tips</button>
+    </div>
   </section>
 
-  <button id="calc">Calculate Tips</button>
+  <!-- 4. End-of-Day Summary -->
+  <section>
+    <h2>4. End-of-Day Summary</h2>
 
-  <h2>Results</h2>
-  <pre id="output"></pre>
+    <!-- Source Summary -->
+    <div id="source-summary">
+      <p>
+        <strong>Total Tip From TIL Machine:</strong>
+        $<span id="total-til">0.00</span>
+      </p>
+      <p>
+        <strong>Total Tip From Jar:</strong>
+        $<span id="total-jar">0.00</span>
+      </p>
+      <p>
+        <strong>Total Tips (TIL + JAR):</strong>
+        $<span id="total-all">0.00</span>
+      </p>
+    </div>
+
+    <!-- Per-employee breakdown -->
+    <pre id="output"></pre>
+  </section>
 
   <script src="script.js"></script>
 </body>
