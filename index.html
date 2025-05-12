@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tip Calculator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Tip Calculator</h1>
+
+  <section>
+    <h2>Employees</h2>
+    <textarea id="employees" rows="6" placeholder='[{"name":"Alice","role":"cook","start":"10:00","end":"18:00"}, …]'></textarea>
+  </section>
+
+  <section>
+    <h2>Tip Periods</h2>
+    <textarea id="periods" rows="6" placeholder='[{"start":"14:00","end":"16:00","til":100,"jar":50}, …]'></textarea>
+  </section>
+
+  <button id="calc">Calculate Tips</button>
+
+  <h2>Results</h2>
+  <pre id="output"></pre>
+
+  <script src="script.js"></script>
+</body>
+</html>
