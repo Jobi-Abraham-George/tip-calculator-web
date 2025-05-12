@@ -7,6 +7,7 @@ const DEFAULT_EMPLOYEES = [
   { name: "Ramjot",  role: "cook",    start: "10:00", end: "18:00" },
   { name: "Jobi",    role: "cook",    start: "10:00", end: "18:00" },
   { name: "Terry",   role: "cook",    start: "10:00", end: "18:00" },
+  { name: "Ali",     role: "cook",    start: "10:00", end: "18:00" },
   { name: "Lori",    role: "cashier", start: "12:00", end: "20:00" },
   { name: "Ryan",    role: "cashier", start: "12:00", end: "20:00" },
   { name: "Taryn",   role: "cashier", start: "12:00", end: "20:00" },
