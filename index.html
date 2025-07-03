@@ -2,7 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Tip Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Professional tip calculator for restaurants with employee management and fair tip allocation">
+  <meta name="keywords" content="tip calculator, restaurant, employee, tips, allocation, fair share">
+  <meta name="author" content="Tip Calculator Pro">
+  <meta name="theme-color" content="#5c6bc0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="TipCalc">
+  <title>Tip Calculator Pro - Fair Restaurant Tip Allocation</title>
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- PWA Icons -->
+  <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIGZpbGw9IiM1YzZiYzAiLz48cGF0aCBkPSJNNDggODBIOTZWMTI4SDQ4VjgwWiIgZmlsbD0iI2ZmYjc0ZCIvPjxwYXRoIGQ9Ik05NiA4MEgxNDRWMTI4SDk2VjgwWiIgZmlsbD0iIzI2YTY5YSIvPjx0ZXh0IHg9Ijk2IiB5PSI2NCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjM2IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+JDwvdGV4dD48dGV4dCB4PSI5NiIgeT0iMTY4IiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5UaXBzPC90ZXh0Pjwvc3ZnPg==">
+  
   <!-- Google Font -->
   <link
     href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
@@ -13,39 +28,82 @@
 <body>
   <h1>Tip Calculator</h1>
 
+  <!-- Data Management Section -->
+  <section>
+    <h2>📊 Data Management</h2>
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+      <button id="export-data">📥 Export Data</button>
+      <button id="import-data">📤 Import Data</button>
+      <button id="clear-all">🗑️ Clear All Data</button>
+      <input type="file" id="import-file" accept=".json" style="display: none;">
+    </div>
+    <p style="font-size: 0.875rem; color: var(--color-muted); margin: 0;">
+      💡 Export your data for backup or import previously saved data. All data is automatically saved to your browser.
+    </p>
+  </section>
+
+  <!-- Shift Templates Section -->
+  <section>
+    <h2>⏰ Shift Templates</h2>
+    <div style="margin-bottom: 1rem;">
+      <h3 style="font-size: 1rem; margin: 0 0 0.5rem 0; color: var(--color-header);">Apply to All Employees:</h3>
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+        <button onclick="applyShiftTemplate('fullDay')" style="background: var(--color-accent);">Full Day</button>
+        <button onclick="applyShiftTemplate('morning')" style="background: #ff9800;">Morning</button>
+        <button onclick="applyShiftTemplate('afternoon')" style="background: #9c27b0;">Afternoon</button>
+        <button onclick="applyShiftTemplate('weekend')" style="background: #4caf50;">Weekend</button>
+      </div>
+      
+      <h3 style="font-size: 1rem; margin: 1rem 0 0.5rem 0; color: var(--color-header);">Add Employee with Shift:</h3>
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <button onclick="applyShiftTemplateToNew('breakfast')" style="background: #ffc107; color: #000;">+ Breakfast</button>
+        <button onclick="applyShiftTemplateToNew('lunch')" style="background: #ff5722;">+ Lunch</button>
+        <button onclick="applyShiftTemplateToNew('dinner')" style="background: #3f51b5;">+ Dinner</button>
+        <button onclick="applyShiftTemplateToNew('closing')" style="background: #424242;">+ Closing</button>
+      </div>
+    </div>
+    <p style="font-size: 0.875rem; color: var(--color-muted); margin: 0;">
+      ⚡ Quick templates for common shift schedules. Use "Apply to All" to set everyone's schedule at once.
+    </p>
+  </section>
+
   <!-- 1. Employee Manager -->
   <section>
     <h2>1. Employee Manager</h2>
-    <table id="emp-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Role</th>
-          <th>Start</th>
-          <th>End</th>
-          <th>Remove</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <div class="table-container">
+      <table id="emp-table" class="mobile-stack">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Remove</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
     <button id="add-emp">Add Employee</button>
   </section>
 
   <!-- 2. Tip Manager -->
   <section>
     <h2>2. Tip Manager</h2>
-    <table id="tip-table">
-      <thead>
-        <tr>
-          <th>Tip Source</th>
-          <th>Start</th>
-          <th>End</th>
-          <th>Amount</th>
-          <th>Remove</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <div class="table-container">
+      <table id="tip-table" class="mobile-stack">
+        <thead>
+          <tr>
+            <th>Tip Source</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Amount</th>
+            <th>Remove</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
     <button id="add-tip">Add Tip Row</button>
 
     <!-- MOVED: Calculate button under Tip Manager -->
@@ -76,6 +134,31 @@
 
     <!-- Per-employee breakdown -->
     <pre id="output"></pre>
+
+    <!-- Quick Actions -->
+    <div style="margin-top: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+      <button id="print-summary">🖨️ Print Summary</button>
+      <button id="copy-summary">📋 Copy to Clipboard</button>
+    </div>
+    
+    <!-- Enhanced Analytics -->
+    <div id="analytics" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--color-muted);">
+      <h3 style="margin: 0 0 1rem 0; color: var(--color-header); font-size: 1.125rem;">📈 Analytics & Insights</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+        <div style="background: var(--color-row-alt); padding: 1rem; border-radius: 6px;">
+          <div style="font-weight: bold; color: var(--color-header); margin-bottom: 0.5rem;">Average Tip per Hour</div>
+          <div id="avg-tip-hour" style="font-size: 1.25rem; color: var(--color-accent);">$0.00</div>
+        </div>
+        <div style="background: var(--color-row-alt); padding: 1rem; border-radius: 6px;">
+          <div style="font-weight: bold; color: var(--color-header); margin-bottom: 0.5rem;">Highest Earner</div>
+          <div id="highest-earner" style="font-size: 1.25rem; color: var(--color-accent);">-</div>
+        </div>
+        <div style="background: var(--color-row-alt); padding: 1rem; border-radius: 6px;">
+          <div style="font-weight: bold; color: var(--color-header); margin-bottom: 0.5rem;">Fairness Score</div>
+          <div id="fairness-score" style="font-size: 1.25rem; color: var(--color-accent);">-</div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <script src="script.js"></script>
