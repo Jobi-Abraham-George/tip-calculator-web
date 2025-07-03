@@ -19,6 +19,61 @@ const NAME_OPTIONS = DEFAULT_EMPLOYEES.map(e => e.name);
 let employees = [];
 let tipEntries = [];
 
+// Validation utilities
+function validateTime(timeStr) {
+  if (!timeStr) return { valid: false, message: "Time is required" };
+  const [hours, minutes] = timeStr.split(':').map(Number);
+  if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+    return { valid: false, message: "Invalid time format" };
+  }
+  return { valid: true };
+}
+
+function validateAmount(amountStr) {
+  if (!amountStr) return { valid: false, message: "Amount is required" };
+  const amount = parseFloat(amountStr);
+  if (isNaN(amount) || amount < 0) {
+    return { valid: false, message: "Amount must be a positive number" };
+  }
+  return { valid: true };
+}
+
+function validateTimeRange(start, end) {
+  if (!start || !end) return { valid: false, message: "Both start and end times are required" };
+  const startMinutes = toMinutes(start);
+  const endMinutes = toMinutes(end);
+  if (startMinutes >= endMinutes) {
+    return { valid: false, message: "End time must be after start time" };
+  }
+  return { valid: true };
+}
+
+function showError(element, message) {
+  element.classList.add('error');
+  element.title = message;
+  
+  // Remove existing error message
+  const existingError = element.parentNode.querySelector('.error-message');
+  if (existingError) existingError.remove();
+  
+  // Add error message
+  const errorDiv = document.createElement('div');
+  errorDiv.className = 'error-message';
+  errorDiv.textContent = message;
+  element.parentNode.appendChild(errorDiv);
+}
+
+function clearError(element) {
+  element.classList.remove('error');
+  element.title = '';
+  const errorMsg = element.parentNode.querySelector('.error-message');
+  if (errorMsg) errorMsg.remove();
+}
+
+function confirmAction(message) {
+  return confirm(message);
+}
+
 
 /*—— Employee Manager ——————————————————————————————————————————————*/
 
@@ -31,6 +86,14 @@ function loadEmployees() {
 }
 function saveEmployees() {
   localStorage.setItem("tipCalcEmployees", JSON.stringify(employees));
+}
+
+function loadTipEntries() {
+  const saved = localStorage.getItem("tipCalcTipEntries");
+  tipEntries = saved ? JSON.parse(saved) : [];
+}
+function saveTipEntries() {
+  localStorage.setItem("tipCalcTipEntries", JSON.stringify(tipEntries));
 }
 
 // Render employee rows
@@ -78,6 +141,19 @@ function renderEmployeeTable() {
     startIn.type  = "time";
     startIn.value = e.start;
     startIn.onchange = () => {
+      clearError(startIn);
+      const validation = validateTime(startIn.value);
+      if (!validation.valid) {
+        showError(startIn, validation.message);
+        return;
+      }
+      
+      const rangeValidation = validateTimeRange(startIn.value, employees[i].end);
+      if (!rangeValidation.valid) {
+        showError(startIn, rangeValidation.message);
+        return;
+      }
+      
       employees[i].start = startIn.value;
       saveEmployees();
     };
@@ -90,6 +166,19 @@ function renderEmployeeTable() {
     endIn.type  = "time";
     endIn.value = e.end;
     endIn.onchange = () => {
+      clearError(endIn);
+      const validation = validateTime(endIn.value);
+      if (!validation.valid) {
+        showError(endIn, validation.message);
+        return;
+      }
+      
+      const rangeValidation = validateTimeRange(employees[i].start, endIn.value);
+      if (!rangeValidation.valid) {
+        showError(endIn, rangeValidation.message);
+        return;
+      }
+      
       employees[i].end = endIn.value;
       saveEmployees();
     };
@@ -101,9 +190,11 @@ function renderEmployeeTable() {
     const rmBtn = document.createElement("button");
     rmBtn.textContent = "✕";
     rmBtn.onclick = () => {
-      employees.splice(i,1);
-      saveEmployees();
-      renderEmployeeTable();
+      if (confirmAction(`Are you sure you want to remove ${e.name}?`)) {
+        employees.splice(i,1);
+        saveEmployees();
+        renderEmployeeTable();
+      }
     };
     rmTd.append(rmBtn);
     row.append(rmTd);
@@ -146,7 +237,10 @@ function renderTipTable() {
       if (t.source === o.v) opt.selected = true;
       srcSel.append(opt);
     });
-    srcSel.onchange = () => { tipEntries[i].source = srcSel.value; };
+    srcSel.onchange = () => { 
+      tipEntries[i].source = srcSel.value; 
+      saveTipEntries();
+    };
     srcTd.append(srcSel);
     row.append(srcTd);
 
@@ -155,7 +249,25 @@ function renderTipTable() {
     const sIn = document.createElement("input");
     sIn.type  = "time";
     sIn.value = t.start;
-    sIn.onchange = () => { tipEntries[i].start = sIn.value; };
+    sIn.onchange = () => { 
+      clearError(sIn);
+      const validation = validateTime(sIn.value);
+      if (!validation.valid) {
+        showError(sIn, validation.message);
+        return;
+      }
+      
+      if (tipEntries[i].end) {
+        const rangeValidation = validateTimeRange(sIn.value, tipEntries[i].end);
+        if (!rangeValidation.valid) {
+          showError(sIn, rangeValidation.message);
+          return;
+        }
+      }
+      
+      tipEntries[i].start = sIn.value; 
+      saveTipEntries();
+    };
     sTd.append(sIn);
     row.append(sTd);
 
@@ -164,7 +276,25 @@ function renderTipTable() {
     const eIn = document.createElement("input");
     eIn.type  = "time";
     eIn.value = t.end;
-    eIn.onchange = () => { tipEntries[i].end = eIn.value; };
+    eIn.onchange = () => { 
+      clearError(eIn);
+      const validation = validateTime(eIn.value);
+      if (!validation.valid) {
+        showError(eIn, validation.message);
+        return;
+      }
+      
+      if (tipEntries[i].start) {
+        const rangeValidation = validateTimeRange(tipEntries[i].start, eIn.value);
+        if (!rangeValidation.valid) {
+          showError(eIn, rangeValidation.message);
+          return;
+        }
+      }
+      
+      tipEntries[i].end = eIn.value; 
+      saveTipEntries();
+    };
     eTd.append(eIn);
     row.append(eTd);
 
@@ -176,7 +306,17 @@ function renderTipTable() {
     aIn.min         = "0";
     aIn.placeholder = "0.00";
     aIn.value       = t.amount;
-    aIn.onchange    = () => { tipEntries[i].amount = aIn.value; };
+    aIn.onchange    = () => { 
+      clearError(aIn);
+      const validation = validateAmount(aIn.value);
+      if (!validation.valid) {
+        showError(aIn, validation.message);
+        return;
+      }
+      
+      tipEntries[i].amount = aIn.value; 
+      saveTipEntries();
+    };
     aTd.append(aIn);
     row.append(aTd);
 
@@ -185,8 +325,11 @@ function renderTipTable() {
     const rBtn = document.createElement("button");
     rBtn.textContent = "✕";
     rBtn.onclick = () => {
-      tipEntries.splice(i,1);
-      renderTipTable();
+      if (confirmAction("Are you sure you want to remove this tip entry?")) {
+        tipEntries.splice(i,1);
+        saveTipEntries();
+        renderTipTable();
+      }
     };
     rTd.append(rBtn);
     row.append(rTd);
@@ -198,6 +341,7 @@ function renderTipTable() {
 // Add tip row
 document.getElementById("add-tip").onclick = () => {
   tipEntries.push({ source:"til", start:"", end:"", amount:"" });
+  saveTipEntries();
   renderTipTable();
 };
 
@@ -262,5 +406,6 @@ document.getElementById("calc").onclick = calculateTips;
 
 /*—— On load ————————————————————————————————————————————————————*/
 loadEmployees();
+loadTipEntries();
 renderEmployeeTable();
 renderTipTable();
