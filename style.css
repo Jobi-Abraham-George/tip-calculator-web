@@ -1,4 +1,4 @@
-THIS SHOULD BE A LINTER ERROR/* ----------------------------------
+/* ----------------------------------
    Color palette
 ----------------------------------- */
 :root {
@@ -30,6 +30,12 @@ body {
   color: var(--color-text);
 }
 
+@media (max-width: 768px) {
+  body {
+    padding: 1rem 0.5rem;
+  }
+}
+
 h1 {
   font-size: 2rem;
   text-align: center;
@@ -41,6 +47,18 @@ h2 {
   font-size: 1.25rem;
   color: var(--color-header);
   margin: 1.5rem 0 0.5rem;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  h2 {
+    font-size: 1.1rem;
+    margin: 1rem 0 0.5rem;
+  }
 }
 
 /* ----------------------------------
@@ -80,6 +98,32 @@ tbody tr:nth-child(even) {
   background: var(--color-row-alt);
 }
 
+/* Mobile responsive table container */
+.table-container {
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .table-container {
+    margin: 0 -1rem 1rem -1rem;
+    padding: 0 1rem;
+  }
+  
+  table {
+    font-size: 0.85rem;
+    min-width: 600px;
+  }
+  
+  th, td {
+    padding: 0.4rem 0.3rem;
+  }
+  
+  th {
+    font-size: 0.75rem;
+  }
+}
+
 /* ----------------------------------
    Inputs & Selects
 ----------------------------------- */
@@ -92,6 +136,38 @@ select {
   border-radius: 4px;
   font-size: 0.9rem;
   color: var(--color-text);
+  transition: border-color 0.2s ease;
+}
+
+input[type="time"]:focus,
+input[type="number"]:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(92, 107, 192, 0.2);
+}
+
+/* Error states */
+input.error,
+select.error {
+  border-color: #e53935;
+  background-color: #ffebee;
+}
+
+.error-message {
+  color: #e53935;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  input[type="time"],
+  input[type="number"],
+  select {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 0.5rem 0.4rem;
+  }
 }
 
 /* ----------------------------------
@@ -110,6 +186,19 @@ button {
 
 button:hover {
   background: var(--color-button-hover);
+}
+
+button:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  button {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    min-height: 44px; /* Better touch target */
+  }
 }
 
 /* ----------------------------------
