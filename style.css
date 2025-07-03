@@ -136,3 +136,69 @@ pre#output {
   white-space: pre-wrap;
   word-wrap: break-word;
 }
+
+/* ----------------------------------
+   Validation & Error States
+----------------------------------- */
+input.error,
+select.error {
+  border-color: #e53935 !important;
+  background-color: #ffebee;
+  box-shadow: 0 0 0 2px rgba(229, 57, 53, 0.2);
+}
+
+input.error:focus,
+select.error:focus {
+  outline: 2px solid #e53935;
+  outline-offset: 1px;
+}
+
+/* Success state for valid inputs */
+input.valid {
+  border-color: #4caf50;
+  background-color: #f1f8e9;
+}
+
+/* ----------------------------------
+   Accessibility Improvements
+----------------------------------- */
+button:focus,
+input:focus,
+select:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ----------------------------------
+   User Feedback
+----------------------------------- */
+.save-indicator {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--color-accent);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+}
+
+.save-indicator.show {
+  opacity: 1;
+}
+
+/* ----------------------------------
+   Enhanced Button States
+----------------------------------- */
+button:disabled {
+  background: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+button:disabled:hover {
+  background: #cccccc;
+}
